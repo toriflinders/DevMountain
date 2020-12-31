@@ -1,6 +1,11 @@
 //Javascript 6
-//Contructor review
 
+let exampleObj = {};
+
+exampleObj.name = 'Matt';
+// console.log(exampleObj)
+
+//Contructor review
 //Write a constructor function called Person that takes in name, age, and birthday properties.
 
 function Person(name, age, birthday){
@@ -17,62 +22,74 @@ Person.prototype.introduceSelf = function(){
 
 //Create two new people and have them introduce themselves.
 
-const toriObj = new Person('Tori', 23, 'May 29th');
-const isaacObj = new Person('Isaac', 24, 'April 9th')
+const aaronObj = new Person('Aaron', 26, 'June 18th');
+const benObj = new Person('Ben', 23, 'June 12th');
 
+// console.log(aaronObj)
+// console.log(benObj)
+// aaronObj.introduceSelf()
+// benObj.introduceSelf()
 
 //Classes
-
 //Create a class called Aircraft that takes in name and range, a string and number respectively.  Also initialize a property called milesFlown and set it to 0.  Attach a prototype method called fly that add the range of the aircraft to the milesFlown.  Then return the updated object.
-<!-- can create either way -->
-<!-- function Aircraft(name, range){
-    this.name = name;
-    this.number = number;
-    this.milesFlown = 0;
-} -->
 
-class AirCraft {
+// function Aircraft(name, range){
+//   this.name = name;
+//   this.range = range;
+//   this.milesFlown = 0;
+// }
+
+// Aircraft.prototype.fly = function(){
+//   this.milesFlown += this.range;
+//   return this;
+// }
+
+class Aircraft {
   constructor(name, range){
     this.name = name;
     this.range = range;
     this.milesFlown = 0;
   }
+
+  //prototype methods
+  fly(){
+    this.milesFlown += this.range;
+    return this;
+  }
 }
-<!-- moved let boeing below fly, was this right? -->
+
+const boieng747 = new Aircraft('747', 5000);
+// console.log(boieng747)
+// boieng747.fly()
 
 //Use your class to create a new Aircraft and invoke fly.
 
-fly(){
-  this.milesFlown += this.range;
-  return this;
-}
-let boieng747 = new Aircraft('747', 5000);
+//Create a new class called Plane that extends aircraft.  It should also take in passengerCount and initialize a passengersFlown property at 0 and a destination property as an empty string.  Modify the exising fly method to take in a destination parameter, It should add the passengerCount to the passengersFlown and add the destination to the destination property.  It should  return a string stating 'name has flown passengersFlown passengers a total of milesFlown miles.  It has gone to destination'.  Make sure all previous functionality of fly is maintained.
 
-//Create a new class called Plane that extends aircraft.  It should also take in passengerCount and initialize a passengersFlown property at 0 and a destinations property as an empty array.  Modify the existing fly method to take in a destination parameter, It should add the passengerCount to the passengersFlown and push the destination to the destinations array.  It should  return a string stating 'name has flown passengersFlown passengers a total of milesFlown miles.  It has gone to destinations'.  Make sure all previous functionality of fly is maintained.
-
-class Plane extends Aircraft{
+class Plane extends Aircraft {
   constructor(name, range, passengerCount){
     super(name, range);
     this.passengerCount = passengerCount;
     this.passengersFlown = 0;
     this.destination = '';
   }
+
   fly(destination){
     super.fly();
     this.passengersFlown += this.passengerCount;
     this.destination = destination;
     return `${this.name} has flown ${this.passengersFlown} passengers a total of ${this.milesFlown} miles. It has gone to ${this.destination}.`;
-
   }
 }
 
-const timsPlane = new Plane('tims', 10000)
+const xWing = new Plane('X-Wing', 10000, 2)
+// console.log(xWing)
+
+xWing.fly('Dagobah')
 
 //Use your class to create a new Airplane and make it fly somewhere!
 
-timsPlane.fly('Rome')
-
-//Create a new class called PrivateJet that extends Plane.  It should also take in an owner property. Modify the existing fly method to instead return 'name has flown owner and passengersFlown friends milesFlown miles.  It has gone to destinations.  Make sure all previous functionality of fly is maintained.
+//Create a new class called PrivateJet that extends Plane.  It should also take in an owner property. Modify the existing fly method to instead return 'name has flown owner and passengersFlown friends milesFlown miles.  It has gone to destination.  Make sure all previous functionality of fly is maintained.
 
 class PrivateJet extends Plane {
   constructor(name, range, passengerCount, pilot){
@@ -82,41 +99,61 @@ class PrivateJet extends Plane {
 
   fly(destination){
     super.fly(destination);
-     return `${this.name} has flown ${this.pilot} and ${passengersFlown} friends ${milesFlown} miles. It has gone to ${this.destination}`;
+    return `${this.name} has flown ${this.pilot} and ${this.passengersFlown} friends ${this.milesFlown} miles. It has gone to ${this.destination}`;
   }
 }
 
-const timsNewPlane = new PrivateJet('tims jet', 50000, 25, 'tim');
-
-timsNewPlane.fly('houston')
 //Use your class to create a new PrivateJet and have it fly wherever you want.
 
+const milleniumFalcon = new PrivateJet('Millenium Falcon', 50000, 25, 'Han Solo');
+// console.log(milleniumFalcon)
+// milleniumFalcon.fly('Alderaan')
 
 // Closures
 
+//Global Scope
+const numOne = 7;
+
+function sayNum(){
+  //Lexical Scope
+  const numTwo = 11;
+
+  return numOne;
+}
+
+// sayNum()
+// console.log(numTwo)
+
 //Write a function called secretNumber.  This function should initialize a number variable at 0 and return a function that increments the number variable.
-<!-- more concise way to write code but still have to add in starting point or 0 when invoking
-function secretNumber(num){
-  return function(){
-    return ++num;
-  }
-} -->
 
 function secretNumber(){
   let num = 0;
+
   function addOne(){
+    // return num += 1;
     return ++num;
   }
+
   return addOne;
 }
 
+// function secretNumber(num){
+//   return function(){
+//     return ++num;
+//   }
+// }
 //Use your function to initialize a new instance of num and invoke the returned function to increment it.
 
+//Snapshot
 const incrementOne = secretNumber()
-incrementOne()
-incrementOne()
-incrementOne()
+// console.log(incrementOne)
+// incrementOne()
+// incrementOne()
+// incrementOne()
 
+const incrementTwo = secretNumber()
+// console.log(incrementTwo)
+// incrementTwo()
 
 //Write a function called someonesNumber that takes in a name paramter.  Initialize a number variable at 0 and return a function that will return the string `name's number is`
 
@@ -131,8 +168,9 @@ function someonesNumber(name){
 
 //Invoke someonesNumber to create a new instance of num and then invoke that returned function to change the number.  Repeat this process to show that there are two separate instances of num.
 
-const toriNum = someonesNumber('Tori');
-toriNum(4)
+const mattNum = someonesNumber('Matt');
+// mattNum(7)
+// mattNum(11)
 
 
 //Create a function called register that takes in a password, a string.  This function will be used to register new users.  Inside of the register function, initialize a variable to track how many times someone has tried to login.  Also initialize a variable to track a secret, this can be anything.  Create a function that takes in a string to attempt to login.  This function with first increment the number of times someone has tried to log in.  Then it will check if the number of attempts is greater than 3, if it is it should return a string indicating that the maximum number of attempts has been exceeded.  Then, it will check if the password is correct.  If it is, the function should return the secret.  Otherwise, it should increment the number of attempts and indicate to the user that their password is incorrect.
@@ -153,48 +191,47 @@ function register(password){
   }
 }
 
-const toriPassword = register('123456');
-toriPassword('123456')
-<!-- OR
-toriPassword('12345')
-toriPassword('12345')
-toriPassword('12345')
-toriPassword('12345') -->
+const mattPassword = register('123456');
+// mattPassword('12345')
+// mattPassword('12345')
+// mattPassword('12345')
+// mattPassword('12345')
 
 
 //Module Pattern
 
 //Use the module pattern to create a calculator.  It should have functionality to add, subtract, multiply, divide, and clear.
 
-<!-- can only use arrows if not using this.method -->
-
 function calculator(){
   let result = 0;
 
-  return{
-    add: (num) =>  result += num,
-
+  return {
+    add: function(num){
+      return result += num;
+    },
     subtract: function(num){
       return result -= num;
     },
     multiply: function(num){
       return result *= num;
     },
-    divide: function(num){
-      return result /= num;
-    },
-    clear: function(num){
+    divide: (num) => result /= num,
+    clear: function(){
       result = 0;
       return result;
     }
   }
 }
-const torisCalculator = calculator();
-torisCalculator.add(5)
-torisCalculator.subtract(2)
-torisCalculator.clear()
 
-const mattsCalculator = calculator();
-mattsCalculator.multiply(10)
+const ti84 = calculator();
+// console.log(ti84)
+// ti84.add(5)
+// ti84.subtract(2)
+// ti84.multiply(20)
+// ti84.divide(2)
+// ti84.clear()
 
-<!-- returns as zero because calling a new calculator so you reset to original declared result -->
+const ti84Plus = calculator();
+// ti84Plus.multiply(10)
+// ti84Plus.subtract(5)
+// ti84Plus.add(10)
